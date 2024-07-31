@@ -1,5 +1,39 @@
-# Название сценария
+# Передача и сохранение событий сервиса Yandex Cloud Postbox в базу данных
 
-Описание сценария и инструкция по его применению.
+Работа с событиями сервиса осуществляется благодаря передачи всех событий в Data Stream клиента и сохранения событий в таблице БД YDB. Перенос событий из YDS в таблицу осуществляется функцией из данного репозитория. В качестве параметров функции (переменных окружения) необходимо указать:
 
-Для практических руководств обязательна ссылка на документацию.
+**YDB_DATABASE** - путь к базе в формате **/ru-central1/b1pr456f9prz1hjrtkvm/etnm43al12fkgjdjl45wq**
+
+**YDB_TABLE** - название таблицы (ниже используется **postbox_events**)
+
+**YDB_ENDPOINT** - эндпоинт для подключения к базе, указан в свойствах созданной базы, в формате **grpcs://ydb.serverless.yandexcloud.net:2135**
+
+Для включения передачи событий из Postbox необходимо:
+- создать поток данных Data Streams
+- настроить в Postbox передачу событий в этот поток (настроить конфигурацию)
+- создать таблицу для данных в YDB
+  
+  _CREATE TABLE postbox_events
+(
+    saved_datetime Datetime NOT NULL,
+    eventid String NOT NULL,
+    eventtype String,
+    mail_timestamp Timestamp,
+    mail_messageid String,
+    mail_ch_from String,
+    mail_ch_to String, 
+    mail_ch_messageid String,
+    mail_ch_subject String,
+    delivery_timestamp Timestamp,
+    delivery_time_ms Uint64,
+    delivery_recipients String,
+    bounce_bounceType String,
+    bounce_bounceSubType String,
+    bounce_bouncedRecipients String,
+    bounce_timestamp Timestamp,
+    -- message Json,
+    PRIMARY KEY (saved_datetime, eventid)_
+  
+- создать функцию на основе кода или архива в данном репозитории
+- создать триггер для запуска функции при появлении событий в Data Streams
+
