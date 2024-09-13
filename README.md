@@ -35,5 +35,11 @@
     PRIMARY KEY (saved_datetime, eventid)_
   
 - создать функцию на основе кода или архива в данном репозитории
-- создать триггер для запуска функции при появлении событий в Data Streams
+- создать триггер для запуска функции при появлении событий в Data Streams и сохранения событий в таблицу. На основе данных возможно построение дашбордов в Datalens
+
+
+Более полная инструкция по сслылке - https://yandex.cloud/ru/docs/postbox/tutorials/events-from-postbox-to-yds
+
+
+<img width="1414" alt="image" src="https://github.com/user-attachments/assets/fd5fd6bd-67ab-4353-9de7-f8cc91348b34">
 
